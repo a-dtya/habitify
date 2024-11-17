@@ -1,12 +1,22 @@
 import { useState } from 'react';
-import { Checkbox } from '@shadcn/ui';
+import { Checkbox } from './ui/checkbox';
 
-export function HabitList({ habits }) {
-  const [completedHabits, setCompletedHabits] = useState([]);
+type Habit = {
+    name: string;
+    frequency: 'daily' | 'weekly'; // You can add more options if needed
+};
 
-  const handleCompletion = (habit) => {
+type HabitListProps = {
+    habits: Habit[];
+};
+  
+export function HabitList({ habits }:HabitListProps) {
+
+  const [completedHabits, setCompletedHabits] = useState<string[]>([]);
+
+  const handleCompletion = (habitName: string) => {
     setCompletedHabits((prev) =>
-      prev.includes(habit) ? prev.filter((h) => h !== habit) : [...prev, habit]
+      prev.includes(habitName) ? prev.filter((h) => h !== habitName) : [...prev, habitName]
     );
   };
 

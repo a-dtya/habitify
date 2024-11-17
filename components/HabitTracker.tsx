@@ -17,10 +17,10 @@ export function HabitTracker() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl mb-6">Habit Tracker</h1>
-      <HabitForm onAdd={addHabit} />
+        <HabitForm onAdd={addHabit} />
       <div className="mt-8">
         <h2 className="text-xl mb-4">Your Habits</h2>
-        <HabitList habits={habits} />
+            <HabitList habits={habits} />
       </div>
     </div>
   );
