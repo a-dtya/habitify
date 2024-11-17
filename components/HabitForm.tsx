@@ -1,16 +1,37 @@
-import { useState } from 'react';
-import { Button, Input, Label, Select, Option } from '@shadcn/ui';
+import { FormEvent, useState, ChangeEvent } from 'react';
+import { Button } from './ui/button';
+import {Input} from './ui/input';
+import { Label} from './ui/label';
+import {Select, SelectItem} from './ui/select';
 
-export function HabitForm({ onAdd }) {
-  const [habitName, setHabitName] = useState('');
-  const [frequency, setFrequency] = useState('daily');
+type Habit = {
+    name: string;
+    frequency: 'daily' | 'weekly';
+};
 
-  const handleSubmit = (e) => {
+type HabitFormProps = {
+    onAdd: (habit: Habit) => void;
+};
+    
+
+export function HabitForm({ onAdd }: HabitFormProps) {
+  const [habitName, setHabitName] = useState<string>('');
+  const [frequency, setFrequency] = useState<'daily'|'weekly'>('daily');
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (habitName) {
       onAdd({ name: habitName, frequency });
       setHabitName('');
     }
+  };
+
+  const handleFrequencyChange = (value: 'daily' | 'weekly') => {
+    setFrequency(value);
+  };
+
+  const handleHabitNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setHabitName(e.target.value);
   };
 
   return (
@@ -20,16 +41,16 @@ export function HabitForm({ onAdd }) {
         <Input 
           type="text" 
           value={habitName} 
-          onChange={(e) => setHabitName(e.target.value)} 
+          onChange={handleHabitNameChange} 
           placeholder="e.g., Drink water" 
           required 
         />
       </div>
       <div>
         <Label>Frequency</Label>
-        <Select value={frequency} onChange={(e) => setFrequency(e.target.value)}>
-          <Option value="daily">Daily</Option>
-          <Option value="weekly">Weekly</Option>
+        <Select value={frequency} onValueChange={handleFrequencyChange}>
+          <SelectItem value="daily">Daily</SelectItem>
+          <SelectItem value="weekly">Weekly</SelectItem>
         </Select>
       </div>
       <Button type="submit" className="w-full">Add Habit</Button>
